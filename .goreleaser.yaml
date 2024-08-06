@@ -31,9 +31,9 @@ builds:
     ldflags:
       - '-s'
       - '-w'
-      - '-X=github.com/disrupt-digital/send-google-chat-webhook/version.Name={{ .ProjectName }}'
-      - '-X=github.com/disrupt-digital/send-google-chat-webhook/version.Version={{ .Version }}'
-      - '-X=github.com/disrupt-digital/send-google-chat-webhook/version.Commit={{ .Commit }}'
+      - '-X=github.com/disrupt-digital/google-chat-webhook/version.Name={{ .ProjectName }}'
+      - '-X=github.com/disrupt-digital/google-chat-webhook/version.Version={{ .Version }}'
+      - '-X=github.com/disrupt-digital/google-chat-webhook/version.Commit={{ .Commit }}'
       - '-extldflags=-static'
     targets:
       - 'darwin_amd64'

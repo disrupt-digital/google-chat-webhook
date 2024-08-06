@@ -1,4 +1,4 @@
-# send-google-chat-webhook
+# google-chat-webhook
 
 This github action will enable users to send notification to google chat via github actions.
 
@@ -27,7 +27,7 @@ jobs:
     # ...
 
     - id: 'notify_google_chat'
-      uses: 'disrupt-digital/send-google-chat-webhook@v1.0.2'
+      uses: 'disrupt-digital/google-chat-webhook@v1.0.2'
       with:
         webhook_url: '${{ secrets.WEBHOOK_URL }}'
         mention: "<users/all>"
@@ -38,7 +38,7 @@ You can customize the condition for when you want this action is called..
 ```yaml
 - id: 'notify google chat'
   if: ${{ inputs.fail_intentionally }}
-  uses: 'disrupt-digital/send-google-chat-webhook@v1.0.2'
+  uses: 'disrupt-digital/google-chat-webhook@v1.0.2'
   with:
     webhook_url: '${{ secrets.WEBHOOK_URL }}'
     mention: "<users/all>"

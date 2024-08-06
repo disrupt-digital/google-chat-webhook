@@ -1,4 +1,4 @@
-module github.com/disrupt-digital/send-google-chat-webhook
+module github.com/disrupt-digital/google-chat-webhook
 
 go 1.20
 

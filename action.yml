@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: 'send-google-chat-webhook'
+name: 'google-chat-webhook'
 description: "send message to your google chat workspace"
 inputs:
   webhook_url: 
@@ -29,7 +29,7 @@ runs:
     - name: 'download binary'
       shell: 'bash'
       env:
-        BINARY_NAME: "dd-send-google-chat-webhook"
+        BINARY_NAME: "google-chat-webhook"
         # manully update VERSION after each release
         # VERSION should not contain v.
         VERSION: "1.0.2"
@@ -54,12 +54,12 @@ runs:
           ;;
         esac
 
-        curl -LOv "https://github.com/disrupt-digital/send-google-chat-webhook/releases/download/v${{ env.VERSION }}/send-google-chat-webhook_${{ env.VERSION }}_${CURL_OS}_${CURL_ARCH}.tar.gz"
+        curl -LOv "https://github.com/disrupt-digital/google-chat-webhook/releases/download/v${{ env.VERSION }}/google-chat-webhook_${{ env.VERSION }}_${CURL_OS}_${CURL_ARCH}.tar.gz"
         tar xzf ${{ env.BINARY_NAME }}_${{ env.VERSION }}_${CURL_OS}_${CURL_ARCH}.tar.gz
     - name: "send message via cli"
       shell: 'bash'
       run: |
-        ./send-google-chat-webhook chat workflownotification --webhook-url="${{ inputs.webhook_url }}"
+        ./google-chat-webhook chat workflownotification --webhook-url="${{ inputs.webhook_url }}"
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
         JOB_CONTEXT: ${{ toJson(job) }}

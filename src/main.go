@@ -51,7 +51,7 @@ const (
 
 var rootCmd = func() cli.Command {
 	return &cli.RootCommand{
-		Name: "send-google-chat-webhook",
+		Name: "google-chat-webhook",
 		Commands: map[string]cli.CommandFactory{
 			"chat": func() cli.Command {
 				return &cli.RootCommand{
