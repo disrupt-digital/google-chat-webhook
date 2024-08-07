@@ -213,6 +213,22 @@ func generateMessageBodyContent(ghJSON, jobJSON map[string]any, currentTimeStamp
 	}
 	eventName := getMapFieldStringValue(ghJSON, githubContextEventNameKey)
 	switch eventName {
+	case "pull_request":
+		prContent, ok := event["pull_request"].(map[string]any)
+		if !ok {
+			prContent = map[string]any{}
+		}
+		return &messageBodyContent{
+			title:           fmt.Sprintf("A pull request is %s", getMapFieldStringValue(event, githubContextEventObjectActionKey)),
+			subtitle:        fmt.Sprintf("PR title: <b>%s</b>", getMapFieldStringValue(prContent, "title")),
+			ref:             getMapFieldStringValue(ghJSON, githubContextRefKey),
+			triggeringActor: getMapFieldStringValue(ghJSON, githubContextTriggeringActorKey),
+			timestamp:       getMapFieldStringValue(prContent, githubEventContenntCreatedAtKey),
+			clickURL:        getMapFieldStringValue(prContent, githubContextEventURLKey),
+			eventName:       "pull_request",
+			repo:            getMapFieldStringValue(ghJSON, githubContextRepositoryKey),
+			headerIconURL:   successHeaderIconURL,
+		}
 	case "issues":
 		issueContent, ok := event["issue"].(map[string]any)
 		if !ok {
@@ -256,7 +272,6 @@ func generateMessageBodyContent(ghJSON, jobJSON map[string]any, currentTimeStamp
 			// a simple work around is using the new timestamp.
 			timestamp: currentTimeStamp.UTC().Format(time.RFC3339),
 			clickURL:  fmt.Sprintf("https://github.com/%s/actions/runs/%s", getMapFieldStringValue(ghJSON, githubContextRepositoryKey), getMapFieldStringValue(ghJSON, "run_id")),
-			prURL:     ("https://github.com/") + getMapFieldStringValue(ghJSON, githubContextRepositoryKey) + fmt.Sprint('/') + parseRefs(getMapFieldStringValue(ghJSON, githubContextRefKey)),
 			eventName: "workflow",
 			repo:      getMapFieldStringValue(ghJSON, githubContextRepositoryKey),
 		}
@@ -322,18 +337,10 @@ func generateRequestBody(m *messageBodyContent) ([]byte, error) {
 								"buttonList": map[string]any{
 									"buttons": []any{
 										map[string]any{
-											"text": "Open PR",
+											"text": m.eventName,
 											"onClick": map[string]any{
 												"openLink": map[string]any{
-													"url": m.prURL,
-												},
-											},
-										},
-										map[string]any{
-											"text": "Open PR",
-											"onClick": map[string]any{
-												"openLink": map[string]any{
-													"url": m.prURL,
+													"url": m.clickURL,
 												},
 											},
 										},
