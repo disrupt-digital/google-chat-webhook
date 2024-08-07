@@ -225,7 +225,7 @@ func generateMessageBodyContent(ghJSON, jobJSON map[string]any, currentTimeStamp
 			triggeringActor: getMapFieldStringValue(ghJSON, githubContextTriggeringActorKey),
 			timestamp:       getMapFieldStringValue(prContent, githubEventContenntCreatedAtKey),
 			clickURL:        getMapFieldStringValue(prContent, githubContextEventURLKey),
-			eventName:       "pull_request",
+			eventName:       "Pull Request",
 			repo:            getMapFieldStringValue(ghJSON, githubContextRepositoryKey),
 			headerIconURL:   successHeaderIconURL,
 		}
@@ -241,7 +241,7 @@ func generateMessageBodyContent(ghJSON, jobJSON map[string]any, currentTimeStamp
 			triggeringActor: getMapFieldStringValue(ghJSON, githubContextTriggeringActorKey),
 			timestamp:       getMapFieldStringValue(issueContent, githubEventContenntCreatedAtKey),
 			clickURL:        getMapFieldStringValue(issueContent, githubContextEventURLKey),
-			eventName:       "issue",
+			eventName:       "Issue",
 			repo:            getMapFieldStringValue(ghJSON, githubContextRepositoryKey),			
 			prURL:           ("https://github.com/") + getMapFieldStringValue(ghJSON, githubContextRepositoryKey) + fmt.Sprint('/') + parseRefs(getMapFieldStringValue(ghJSON, githubContextRefKey)),
 			headerIconURL:   successHeaderIconURL,
@@ -258,7 +258,7 @@ func generateMessageBodyContent(ghJSON, jobJSON map[string]any, currentTimeStamp
 			triggeringActor: getMapFieldStringValue(ghJSON, githubContextTriggeringActorKey),
 			timestamp:       getMapFieldStringValue(releaseContent, githubEventContenntCreatedAtKey),
 			clickURL:        getMapFieldStringValue(releaseContent, githubContextEventURLKey),
-			eventName:       "release",
+			eventName:       "Release",
 			repo:            getMapFieldStringValue(ghJSON, githubContextRepositoryKey),
 			headerIconURL:   successHeaderIconURL,
 		}
@@ -272,7 +272,7 @@ func generateMessageBodyContent(ghJSON, jobJSON map[string]any, currentTimeStamp
 			// a simple work around is using the new timestamp.
 			timestamp: currentTimeStamp.UTC().Format(time.RFC3339),
 			clickURL:  fmt.Sprintf("https://github.com/%s/actions/runs/%s", getMapFieldStringValue(ghJSON, githubContextRepositoryKey), getMapFieldStringValue(ghJSON, "run_id")),
-			eventName: "workflow",
+			eventName: "Workflow",
 			repo:      getMapFieldStringValue(ghJSON, githubContextRepositoryKey),
 		}
 		v, ok := jobJSON["status"]
@@ -298,8 +298,8 @@ func generateRequestBody(m *messageBodyContent) ([]byte, error) {
 				},
 				"sections": []any{
 					map[string]any{
-						"collapsible":               true,
-						"uncollapsibleWidgetsCount": 1,
+						"collapsible":  true,
+						"uncollapsibleWidgetsCount": 2,
 						"widgets": []map[string]any{
 							{
 								"decoratedText": map[string]any{
@@ -307,6 +307,20 @@ func generateRequestBody(m *messageBodyContent) ([]byte, error) {
 										"iconUrl": widgetRefIconURL,
 									},
 									"text": fmt.Sprintf("<b>Repo: </b> %s", m.repo),
+								},
+							},
+							{
+								"buttonList": map[string]any{
+									"buttons": []any{
+										map[string]any{
+											"text": m.eventName,
+											"onClick": map[string]any{
+												"openLink": map[string]any{
+													"url": m.clickURL,
+												},
+											},
+										},
+									},
 								},
 							},
 							{
@@ -331,20 +345,6 @@ func generateRequestBody(m *messageBodyContent) ([]byte, error) {
 										"knownIcon": "CLOCK",
 									},
 									"text": fmt.Sprintf("<b>UTC: </b> %s", m.timestamp),
-								},
-							},
-							{
-								"buttonList": map[string]any{
-									"buttons": []any{
-										map[string]any{
-											"text": m.eventName,
-											"onClick": map[string]any{
-												"openLink": map[string]any{
-													"url": m.clickURL,
-												},
-											},
-										},
-									},
 								},
 							},
 						},
