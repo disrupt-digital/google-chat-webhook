@@ -310,20 +310,6 @@ func generateRequestBody(m *messageBodyContent) ([]byte, error) {
 								},
 							},
 							{
-								"buttonList": map[string]any{
-									"buttons": []any{
-										map[string]any{
-											"text": m.eventName,
-											"onClick": map[string]any{
-												"openLink": map[string]any{
-													"url": m.clickURL,
-												},
-											},
-										},
-									},
-								},
-							},
-							{
 								"decoratedText": map[string]any{
 									"startIcon": map[string]any{
 										"iconUrl": widgetRefIconURL,
@@ -345,6 +331,20 @@ func generateRequestBody(m *messageBodyContent) ([]byte, error) {
 										"knownIcon": "CLOCK",
 									},
 									"text": fmt.Sprintf("<b>UTC: </b> %s", m.timestamp),
+								},
+							},
+							{
+								"buttonList": map[string]any{
+									"buttons": []any{
+										map[string]any{
+											"text": m.eventName,
+											"onClick": map[string]any{
+												"openLink": map[string]any{
+													"url": m.clickURL,
+												},
+											},
+										},
+									},
 								},
 							},
 						},
