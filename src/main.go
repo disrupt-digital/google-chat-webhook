@@ -299,7 +299,7 @@ func generateRequestBody(m *messageBodyContent) ([]byte, error) {
 				"sections": []any{
 					map[string]any{
 						"collapsible":  true,
-						"uncollapsibleWidgetsCount": 2,
+						"uncollapsibleWidgetsCount": 5,
 						"widgets": []map[string]any{
 							{
 								"decoratedText": map[string]any{
